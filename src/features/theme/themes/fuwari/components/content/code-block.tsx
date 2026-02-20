@@ -1,4 +1,5 @@
-import { memo, useState } from "react";
+import { memo, useLayoutEffect, useRef, useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Map short codes to display labels
@@ -39,12 +40,29 @@ interface CodeBlockProps {
   highlightedHtml?: string;
 }
 
+const FOLD_THRESHOLD = 400;
+
 export const CodeBlock = memo(
   ({ code, language, highlightedHtml }: CodeBlockProps) => {
     const fallback = `<pre class="shiki font-mono text-sm leading-relaxed whitespace-pre-wrap text-(--fuwari-btn-content) bg-transparent! p-0 m-0 border-0"><code>${code}</code></pre>`;
     const html = highlightedHtml || fallback;
 
     const [copied, setCopied] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [needsFolding, setNeedsFolding] = useState(false);
+    const [contentHeight, setContentHeight] = useState(0);
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      if (contentRef.current) {
+        // If the content is taller than our threshold, enable folding
+        const scrollHeight = contentRef.current.scrollHeight;
+        if (scrollHeight > FOLD_THRESHOLD + 50) {
+          setNeedsFolding(true);
+          setContentHeight(scrollHeight);
+        }
+      }
+    }, [html]);
 
     // Helper to get display label (following expressive-code language badge logic)
     const displayLanguage = language
@@ -107,15 +125,58 @@ export const CodeBlock = memo(
             </div>
           </button>
 
-          {/* Code Area */}
-          <div className="relative p-0 overflow-x-auto custom-scrollbar rounded-b-xl">
-            <div className="text-sm font-mono leading-relaxed transition-opacity duration-300">
+          {/* Code Area with Folding Support */}
+          <div
+            className={cn(
+              "fuwari-code-folding-wrapper custom-scrollbar",
+              needsFolding && isCollapsed && "fuwari-code-collapsed",
+            )}
+            style={
+              needsFolding
+                ? { maxHeight: isCollapsed ? FOLD_THRESHOLD : contentHeight }
+                : undefined
+            }
+          >
+            <div
+              ref={contentRef}
+              className="text-sm font-mono leading-relaxed transition-opacity duration-300"
+            >
               <div
                 className="[&>pre]:px-5 [&>pre]:py-4 [&>pre]:m-0 [&>pre]:min-w-full [&>pre]:w-fit [&_code]:block [&_code]:w-fit [&>pre]:rounded-xl [&>pre>code]:p-0"
                 dangerouslySetInnerHTML={{ __html: html }}
               />
             </div>
+
+            {needsFolding && (
+              <div
+                className={cn(
+                  "fuwari-code-mask transition-opacity duration-500",
+                  isCollapsed ? "opacity-100" : "opacity-0",
+                )}
+              />
+            )}
           </div>
+
+          {/* Expand Button (Subtle Overlay Style) */}
+          {needsFolding && (
+            <div
+              className={cn(
+                "absolute bottom-4 left-0 right-0 flex justify-center z-20 pointer-events-none transition-all duration-500",
+                isCollapsed
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-4",
+              )}
+            >
+              <button
+                onClick={() => setIsCollapsed(false)}
+                disabled={!isCollapsed}
+                className="pointer-events-auto flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium text-black/50 hover:text-black/70 dark:text-white/50 dark:hover:text-white/70 bg-black/5 hover:bg-black/10 dark:bg-white/5 dark:hover:bg-white/10 transition-all active:scale-[0.98] backdrop-blur-md"
+              >
+                <ChevronDown size={16} />
+                <span>显示更多</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );

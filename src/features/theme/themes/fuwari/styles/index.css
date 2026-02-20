@@ -197,6 +197,20 @@
   .dark .fuwari-timeline-dash::before {
     border-left: 2px dashed rgba(255, 255, 255, 0.1);
   }
+
+  .fuwari-code-folding-wrapper {
+    @apply relative transition-[max-height] duration-500 ease-in-out overflow-hidden;
+  }
+
+  .fuwari-code-collapsed {
+    max-height: 400px;
+  }
+
+  .fuwari-code-mask {
+    @apply absolute bottom-0 left-0 right-0 h-24 pointer-events-none;
+    background: linear-gradient(to bottom, transparent, var(--fuwari-card-bg));
+    z-index: 10;
+  }
 }
 
 /* Fuwari onload / entrance animations */
