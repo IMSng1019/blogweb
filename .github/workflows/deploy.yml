@@ -88,6 +88,7 @@ jobs:
           echo "VITE_TURNSTILE_SITE_KEY=${{ vars.VITE_TURNSTILE_SITE_KEY }}" >> $GITHUB_ENV
           echo "THEME=${{ vars.THEME }}" >> $GITHUB_ENV
           echo "TURNSTILE_SECRET_KEY=${{ secrets.TURNSTILE_SECRET_KEY }}" >> $GITHUB_ENV
+          echo "OBSIDIAN_SYNC_TOKEN=${{ secrets.OBSIDIAN_SYNC_TOKEN }}" >> $GITHUB_ENV
 
       - name: Inject Resource IDs
         run: |
@@ -114,7 +115,8 @@ jobs:
             "UMAMI_SRC": "$UMAMI_SRC",
             "PAGEVIEW_SALT": "$PAGEVIEW_SALT",
             "TURNSTILE_SECRET_KEY": "$TURNSTILE_SECRET_KEY",
-            "GITHUB_TOKEN": "$GITHUB_TOKEN"
+            "GITHUB_TOKEN": "$GITHUB_TOKEN",
+            "OBSIDIAN_SYNC_TOKEN": "$OBSIDIAN_SYNC_TOKEN"
           }
           EOF
 
