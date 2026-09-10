@@ -1,4 +1,4 @@
-import { asc, eq, gt, inArray } from "drizzle-orm";
+import { and, asc, eq, gt, inArray } from "drizzle-orm";
 import { ObsidianPostLinksTable, PostsTable } from "@/lib/db/schema";
 
 export async function findPostLink(db: DB, postId: number) {
