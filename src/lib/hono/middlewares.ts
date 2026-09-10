@@ -73,7 +73,7 @@ export const cacheMiddleware = createMiddleware(async (c, next) => {
 
   // 排除需要 session 的 API（如 /api/auth, /api/send）
   // 但包含 public API（/api/posts, /api/post, /api/tags, /api/search）
-  const EXCLUDED_PREFIXES = ["/api/auth", "/api/send"];
+  const EXCLUDED_PREFIXES = ["/api/auth", "/api/send", "/api/obsidian"];
   if (EXCLUDED_PREFIXES.some((prefix) => path.startsWith(prefix))) {
     return next();
   }

@@ -206,6 +206,7 @@ Please refer to the **[Flare Stack Blog Deployment Guide](./deployment-guide.en.
 | `TURNSTILE_SECRET_KEY`    | Runtime    | Cloudflare Turnstile Secret Key for CAPTCHA.                                                             |
 | `VITE_TURNSTILE_SITE_KEY` | Build-time | Cloudflare Turnstile Site Key.                                                                           |
 | `GITHUB_TOKEN`            | Runtime    | GitHub API Token (for version updates checking to avoid rate limits).                                    |
+| `OBSIDIAN_SYNC_TOKEN`     | Secret     | Bearer token for the Obsidian synchronization API.                                                       |
 | `LOCALE`                  | Runtime    | Default language: `zh` or `en`. Default: `zh`. Used for emails, webhooks, and background task messaging. |
 | `CDN_DOMAIN`              | Runtime    | Standalone CDN domain (e.g., `cdn.example.com`), preferentially used during purge.                       |
 | `PAGEVIEW_SALT`           | Runtime    | Salt for anonymizing pageview visitor hashes. Generate with `openssl rand -hex 16`.                      |

@@ -30,6 +30,7 @@ const serverEnvSchema = z.object({
   PAGEVIEW_SALT: z.string().optional(),
   TURNSTILE_SECRET_KEY: z.string().optional(),
   GITHUB_TOKEN: z.string().optional(),
+  OBSIDIAN_SYNC_TOKEN: z.string().optional(),
 });
 
 export function serverEnv(env: Env) {

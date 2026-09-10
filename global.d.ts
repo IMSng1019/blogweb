@@ -44,6 +44,7 @@ declare global {
   }
 
   interface Env extends Cloudflare.Env {
+    OBSIDIAN_SYNC_TOKEN?: string;
     POST_PROCESS_WORKFLOW: Workflow<PostProcessWorkflowParams>;
     POST_AUTO_SNAPSHOT_WORKFLOW: Workflow<PostAutoSnapshotWorkflowParams>;
     COMMENT_MODERATION_WORKFLOW: Workflow<CommentModerationWorkflowParams>;
