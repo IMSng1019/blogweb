@@ -8,6 +8,7 @@ import type { QueueMessage } from "@/lib/queue/queue.schema";
 declare global {
   interface Env extends Cloudflare.Env {
     QUEUE: Queue<QueueMessage>;
+    OBSIDIAN_SYNC_TOKEN?: string;
   }
 
   type DB = DBType;

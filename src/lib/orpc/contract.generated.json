@@ -1045,5 +1045,68 @@
         }
       }
     }
+  },
+  "obsidianSync": {
+    "list": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {},
+        "route": {
+          "method": "GET",
+          "path": "/obsidian/articles",
+          "summary": "List articles for Obsidian sync",
+          "tags": ["Obsidian Sync"]
+        }
+      }
+    },
+    "create": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {},
+        "route": {
+          "method": "POST",
+          "path": "/obsidian/articles",
+          "successStatus": 201,
+          "summary": "Create an article from an Obsidian note",
+          "tags": ["Obsidian Sync"]
+        }
+      }
+    },
+    "get": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {},
+        "route": {
+          "method": "GET",
+          "path": "/obsidian/articles/{id}",
+          "summary": "Get an article by id",
+          "tags": ["Obsidian Sync"]
+        }
+      }
+    },
+    "update": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {},
+        "route": {
+          "method": "PUT",
+          "path": "/obsidian/articles/{id}",
+          "summary": "Update an article from an Obsidian note",
+          "tags": ["Obsidian Sync"]
+        }
+      }
+    },
+    "remove": {
+      "~orpc": {
+        "errorMap": {},
+        "meta": {},
+        "route": {
+          "method": "DELETE",
+          "path": "/obsidian/articles/{id}",
+          "summary": "Delete an article",
+          "tags": ["Obsidian Sync"]
+        }
+      }
+    }
   }
 }

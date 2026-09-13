@@ -23,7 +23,7 @@ const JsonMarkSchema = z
   })
   .catchall(JsonValueSchema);
 
-const JsonContentSchema: z.ZodType<JSONContent> = z.lazy(() =>
+export const JsonContentSchema: z.ZodType<JSONContent> = z.lazy(() =>
   z
     .object({
       type: z.string().optional(),

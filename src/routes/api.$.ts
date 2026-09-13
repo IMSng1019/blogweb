@@ -14,7 +14,20 @@ export const Route = createFileRoute("/api/$")({
             context.executionCtx,
           ),
         });
-        return response ?? new Response("Not Found", { status: 404 });
+        if (!response) return new Response("Not Found", { status: 404 });
+        if (new URL(request.url).pathname.startsWith("/api/obsidian/")) {
+          const headers = new Headers(response.headers);
+          headers.set("Cache-Control", "no-store");
+          if (response.status === 401) {
+            headers.set("WWW-Authenticate", "Bearer");
+          }
+          return new Response(response.body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers,
+          });
+        }
+        return response;
       },
     },
   },

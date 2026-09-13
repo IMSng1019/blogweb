@@ -247,6 +247,7 @@ Array.from(crypto.getRandomValues(new Uint8Array(32)), (n) =>
 | Umami 访问统计 | `VITE_UMAMI_WEBSITE_ID` | `UMAMI_WEBSITE_ID`、`UMAMI_SRC` | 两边 Website ID 填同一个，`UMAMI_SRC` 填服务地址，例如 `https://cloud.umami.is` |
 | Umami 文章热度同步 | 同上 | Cloud 使用 `UMAMI_API_KEY`；自托管使用 `UMAMI_USERNAME`、`UMAMI_PASSWORD` | API Key 和密码设为 Secret；两种认证方式二选一。API 地址可按模板配置 `UMAMI_API_URL` |
 | 减少后台更新检查的 GitHub API 限流 | 无 | `GITHUB_TOKEN`（Secret） | 按模板链接创建 Fine-grained token，权限保留默认的公共仓库只读访问 |
+| Obsidian 文章同步 | 无 | `OBSIDIAN_SYNC_TOKEN`（Secret） | 为 Obsidian 插件访问 `/api/obsidian/articles` 设置高熵 Bearer Token |
 
 修改**构建时变量**后，需要重新触发构建，新值才会进入部署产物。修改**运行时变量**后，使用保存并部署使其生效。
 

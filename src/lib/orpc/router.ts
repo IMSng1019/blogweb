@@ -18,6 +18,7 @@ import searchRouter from "@/features/search/server/router";
 import tagsRouter from "@/features/tags/server/router";
 import versionRouter from "@/features/version/server/router";
 import webhookRouter from "@/features/webhook/server/router";
+import obsidianSyncRouter from "@/features/obsidian-sync/server/router";
 
 export const router = {
   posts: postsRouter,
@@ -35,6 +36,7 @@ export const router = {
   cache: cacheRouter,
   version: versionRouter,
   webhooks: webhookRouter,
+  obsidianSync: obsidianSyncRouter,
 };
 
 export type AppRouter = typeof router;

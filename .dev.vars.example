@@ -31,3 +31,7 @@ ENVIRONMENT=dev
 # 未认证请求限流 60 次/小时/IP，Workers 共享 IP 容易触发。
 # 创建无权限的 Fine-grained token: https://github.com/settings/personal-access-tokens
 # GITHUB_TOKEN=your-github-token
+
+# --- 可选：Obsidian 同步 API ---
+# 为 Obsidian 插件生成一个高熵 Bearer Token，并在客户端使用同一个值。
+# OBSIDIAN_SYNC_TOKEN=your-obsidian-sync-token
