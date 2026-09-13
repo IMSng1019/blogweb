@@ -1,6 +1,10 @@
 import type { JSONContent } from "@tiptap/react";
 import { extractImageKey } from "@/features/media/utils/media.utils";
 
+function escapeMarkdownText(value: string): string {
+  return value.replace(/([\\`*_{}()[\]#+!|>~-])/g, "\\$1");
+}
+
 /**
  * JSONContent → Markdown 转换器
  *
@@ -163,9 +167,13 @@ function serializeInlineNode(
   options?: { rewriteImageSrc?: (src: string) => string },
 ): string {
   if (node.type === "text") {
-    let text = node.text ?? "";
+    const marks = node.marks ?? [];
+    const hasCodeMark = marks.some((mark) => mark.type === "code");
+    let text = hasCodeMark
+      ? (node.text ?? "").replace(/`/g, "\\`")
+      : escapeMarkdownText(node.text ?? "");
     // Apply marks in order
-    for (const mark of node.marks ?? []) {
+    for (const mark of marks) {
       text = applyMark(mark, text);
     }
     return text;

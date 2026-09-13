@@ -51,6 +51,13 @@ describe("jsonContentToMarkdown", () => {
     expect(result).toContain("hello **bold**");
   });
 
+  it("should escape markdown markers in plain text", () => {
+    const result = jsonContentToMarkdown(
+      doc(paragraph(text("literal **文本**"))),
+    );
+    expect(result).toBe("literal \\*\\*文本\\*\\*\n");
+  });
+
   it("should convert paragraph with italic", () => {
     const result = jsonContentToMarkdown(
       doc(paragraph(text("hello "), text("italic", [{ type: "italic" }]))),
