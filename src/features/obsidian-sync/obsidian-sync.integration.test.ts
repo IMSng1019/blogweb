@@ -11,6 +11,7 @@ import {
   updatePostWithLink,
 } from "@/features/obsidian-sync/data/obsidian-sync.data";
 import { contentHash } from "@/features/obsidian-sync/service/obsidian-sync.service";
+import { normalizeObsidianResponse } from "@/routes/api.$";
 
 const token = "obsidian-sync-test-token";
 const content = {
@@ -52,7 +53,7 @@ async function request(
     { prefix: "/api", context: { ...context, headers } },
   );
   if (!result.response) throw new Error(`Route was not matched: ${path}`);
-  return result.response;
+  return normalizeObsidianResponse(result.response);
 }
 
 describe("Obsidian sync API", () => {
@@ -83,6 +84,29 @@ describe("Obsidian sync API", () => {
     );
 
     expect(response.response?.status).toBe(401);
+  });
+
+  it("keeps the legacy error envelope for the Obsidian client", async () => {
+    const response = await normalizeObsidianResponse(
+      new Response(
+        JSON.stringify({
+          defined: true,
+          code: "REVISION_CONFLICT",
+          message: "The remote article changed.",
+          data: { current: { id: 1, revision: 2 } },
+        }),
+        { status: 409 },
+      ),
+    );
+
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(await response.json()).toEqual({
+      error: {
+        code: "REVISION_CONFLICT",
+        message: "The remote article changed.",
+        current: { id: 1, revision: 2 },
+      },
+    });
   });
 
   it("creates, reads, conditionally updates, and deletes a linked Post", async () => {
@@ -136,8 +160,7 @@ describe("Obsidian sync API", () => {
     );
     expect(conflictResponse.status).toBe(409);
     expect(await conflictResponse.json()).toMatchObject({
-      code: "REVISION_CONFLICT",
-      data: { current: { revision: 2 } },
+      error: { code: "REVISION_CONFLICT", current: { revision: 2 } },
     });
 
     const deleteResponse = await request(context, `/obsidian/articles/${id}`, {
@@ -289,9 +312,9 @@ describe("Obsidian sync API", () => {
     const conflict = responses.find((response) => response.status === 409);
     expect(conflict).toBeDefined();
     const conflictBody = (await conflict!.json()) as {
-      data: { current: { slug: string } };
+      error: { current: { slug: string } };
     };
-    expect(conflictBody.data.current.slug).toBe(stored?.slug);
+    expect(conflictBody.error.current.slug).toBe(stored?.slug);
   });
 
   it("keeps the sync revision when the Post update fails", async () => {
